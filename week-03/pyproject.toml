@@ -1,0 +1,12 @@
+[project]
+name = "week-03"
+version = "0.1.0"
+description = "W3 蒲丰投针：从模拟到报告"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "matplotlib>=3.8",
+  "pytest>=8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

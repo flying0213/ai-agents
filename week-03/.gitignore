@@ -1,0 +1,48 @@
+# W3 本地忽略规则（仅作用于 week-03/，不修改仓库根配置）
+
+# 虚拟环境与 Python 缓存
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 构建与打包产物
+build/
+dist/
+*.egg-info/
+
+# LaTeX 中间文件（保留 report.tex 与最终 report.pdf）
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
+*.blg
+*.bbl
+*.idx
+*.ilg
+*.ind
+*.nav
+*.snm
+*.vrb
+
+# 凭据与本地私密配置（绝不提交）
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*
+secrets*
+*_secret*
+api_keys.*
+
+# 编辑器与系统文件
+.DS_Store
+.vscode/settings.json
+*.swp

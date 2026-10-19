@@ -1,4 +1,14 @@
-# W2｜Course Check
+# AI Agents｜W2 与 W3
+
+本仓库是 AI Agents 课程的学生工作台：
+
+- W2 的 Course Check 在仓库根目录，操作说明见下文。
+- W3 的蒲丰投针实验与报告材料在 [`week-03/`](week-03/)，使用说明见 [`README-materials.md`](week-03/README-materials.md)。
+- 可直接运行的 W3 教师演示在 [`demos/week-03-buffon/`](demos/week-03-buffon/)，供课堂展示和本地复现，不替代学生工作目录。
+
+W3 沿用 W2 已经 clone 的仓库和已有 Git 历史，但在 `week-03/` 建立独立的 uv 项目。W2 根目录的代码、依赖与环境不构成 W3 的代码基线；W3 的实现、锁文件与 `.venv/` 都属于 `week-03/`。
+
+## W2｜Course Check
 
 这是 AI Agents 课程第二周的一次性工作台，不构成后续项目的代码基线。仓库根目录同时也是 uv 项目根目录；三节课始终在这里观察：
 
@@ -53,4 +63,17 @@ git commit -m "w2: set public signature"
 
 本周不执行 `git push`。commit 只保存本地历史，不会自动改变 GitHub 上的 remote。
 
-本工作台不构成 W3 或后续项目的代码基础；W3 会从新的正式仓库独立开始。
+## W3｜Agent 与实验报告
+
+沿用已有的 `~/course/w02-workbench`。在该仓库中通过 Git 取得教师发布的材料，然后直接进入本周目录：
+
+```bash
+cd ~/course/w02-workbench
+git pull --no-rebase origin main
+cd week-03
+code .
+```
+
+让 Agent 阅读本目录的 `README-materials.md`、`EXPERIMENT.txt`、测试与模板，在 `week-03/` 中生成独立的 `pyproject.toml`、`uv.lock` 和两个 Python 入口，再运行实验、公开测试与报告重建。
+
+本周的 Git 提交仍属于原有仓库；不需要第二次 clone、跨目录复制材料或在 `week-03/` 中初始化新仓库。完成后按 W3 Guide 将实验报告保存到自己的 remote；本次不要求 fork 教师仓库、建立 `students/sXX/system/` 或提交 PR。配置个人 remote 后，教师材料的更新从保留的 `upstream` 获取，具体操作以 Guide 为准。

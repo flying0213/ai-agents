@@ -1,0 +1,12 @@
+# 只维护源码和依赖信息；结果在本地重建。
+results.csv
+results.png
+results-table.tex
+results-params.tex
+report.pdf
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz

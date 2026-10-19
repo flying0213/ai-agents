@@ -1,0 +1,67 @@
+W3：用蒲丰投针估计圆周率，并把真实结果写入 LaTeX 报告
+
+请在这个目录中建立 uv 管理的 Python 3.12 项目，依赖 matplotlib 和 pytest。
+先阅读 README-materials.md、公开 tests、rebuild.sh 和 report.tex，再制定操作计划。
+保留教师提供的 tests 和 rebuild.sh；实现不通过测试时，修实现，不修改这些文件。
+不需要动画，不需要服务器，不需要另建完整框架。内部文件组织自由。
+
+问题
+地面有间距 spacing 的平行线。随机投下一根长度 length 的针。
+distance 是针的中心到最近一条线的距离；angle 是针与平行线的夹角。
+distance 在 [0, spacing/2] 均匀取样；angle 在 [0, pi/2] 均匀取样，二者独立。
+接触到线也记为相交。相交判据：distance <= (length/2) * sin(angle)。
+本实验限制 0 < length <= spacing。默认 length=0.5，spacing=1.0。
+
+固定入口一：experiment.py
+可被 import，import 时不启动实验、不写文件。
+提供以下三个函数；默认参数也属于接口：
+
+crosses_line(distance, angle, length=0.5, spacing=1.0) -> bool
+输入范围：0 <= distance <= spacing/2，0 <= angle <= pi/2。
+不合法的几何参数用 ValueError 提示，不要静默改参数。
+
+estimate_pi(n, crossings, length=0.5, spacing=1.0) -> float
+估计值：2 * length * n / (spacing * crossings)。
+n 为正整数；crossings 为整数且 0 <= crossings <= n。
+crossings=0 时无法用这个式子估计，用 ValueError 提示。
+
+simulate(n, seed=42, length=0.5, spacing=1.0) -> dict
+每次调用在循环外用 seed 初始化随机数生成器一次；循环内持续取样。
+不要在每一次投针时重新设置 seed，否则可能反复得到相同的针。
+返回六个字段：seed, n, crossings, pi_estimate, needle_length, line_spacing。
+pi_estimate 根据这次实际 crossings 计算；不要直接填入 math.pi。
+如果本次 crossings=0，明确报错，不把不存在的估计值伪装成有效数字。
+
+直接运行：uv run --locked python experiment.py
+起始配置分别运行 n=1000、10000、100000，seed=42，每组独立初始化一次。
+输出 results.csv，表头与上面的六个字段相同，顺序也相同；一组实验一行。
+输出文件写入当前工作目录。给人读的进度提示可另打印到终端。
+已有实验结果可以被新一次运行更新；不要覆盖教师 tests 或 rebuild.sh。
+可以选做 --seed/--n 等命令行参数；无参数执行保留以上三组，可额外增加 n，
+也可以更换程序入口的 seed。函数默认参数仍保留上述接口，CSV 记录实际值。
+
+固定入口二：render_results.py
+直接运行：uv run --locked python render_results.py
+读取当前目录的真实 results.csv，不在这一步重新投针、不编造结果。
+在当前目录生成：
+- results-table.tex：可直接 input 的 LaTeX 表格，展示 n、crossings 和 pi_estimate。
+- results.png：一张静态图，展示不同 n 对应的估计值；可加真实 pi 的参考线。
+- results-params.tex：可直接 input 的短文字，显示 CSV 中实际使用的 seed 和各组 n，
+  以及针长和线间距。换参数后，报告中的这些信息也要跟着更新。
+图表与参数文件使用同一份 CSV。输出中文 LaTeX 时沿用模板的字体设置；
+图片坐标轴可以用英文，避免图像中文字体成为额外安装任务。
+
+报告与运行
+保留 report.tex 的基本结构，补一句实验目的、方法和一条基于结果的观察。
+先编译空模板一次，再运行实验和生成图表；没有图表时模板也能编译。
+每次准备交付报告时，运行 bash rebuild.sh：模拟 -> 图表 -> PDF。
+脚本不运行测试。公开测试单独运行：uv run --locked pytest -q
+先用 uv sync 安装依赖并生成 uv.lock，之后的 --locked 不允许悄悄更换依赖。
+不要把“大样本必定更准”写成判断标准，也不要要求估计值恰好等于 pi。
+最后由人打开 PDF，核对参数、表格、图像和程序实际输出是否一致。
+
+选做拓展
+围绕现有项目继续探索，具体操作与核验方式见 W3 Guide 的选做部分：
+https://github.com/wxyinucas/teaching-hub/blob/main/terms/2026-fall/courses/ai-agents/weeks/week-03/guide.md
+选一个工具或代码问题，让 Agent 带路定位文件、解释代码，再对照实际界面或文件核验。
+只读探索即可，不要求增加功能，也不要求安装另一种 Agent；不作为下一周的前提。
