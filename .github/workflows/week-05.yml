@@ -1,0 +1,54 @@
+name: W5 data operations
+
+"on":
+  push:
+    paths:
+      - "week-05/**"
+      - ".github/workflows/week-05.yml"
+  pull_request:
+    paths:
+      - "week-05/**"
+      - ".github/workflows/week-05.yml"
+  workflow_dispatch:
+    inputs:
+      implementation:
+        description: "验收对象：学生实现、公开参考或已知故障"
+        required: true
+        type: choice
+        default: student
+        options:
+          - student
+          - reference
+          - broken
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    name: W5 acceptance
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # 教师仓库普通提交检查参考材料；个人仓库检查学生实现。手动选择优先。
+    env:
+      W5_IMPLEMENTATION: ${{ inputs.implementation || (github.repository == 'wxyinucas/ai-agents' && 'reference' || 'student') }}
+    defaults:
+      run:
+        working-directory: week-05
+    steps:
+      - name: Check out this commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up uv and Python 3.12
+        uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          version: "0.13.5"
+          python-version: "3.12"
+          working-directory: week-05
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - name: Restore the locked environment
+        run: uv sync --locked
+      - name: Run ${{ env.W5_IMPLEMENTATION }} acceptance tests
+        run: uv run --locked pytest -q --impl="$W5_IMPLEMENTATION"

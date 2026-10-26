@@ -1,0 +1,13 @@
+[project]
+name = "ai-agents-week-04"
+version = "0.1.0"
+description = "W4: preserve a baseline and create independent simulation configurations"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "ipykernel>=6.29,<8",
+    "pytest>=8.4,<10",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

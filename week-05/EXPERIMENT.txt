@@ -1,0 +1,98 @@
+W5｜数据操作与遍历
+
+在 operations.py 完成以下三个固定入口。可以与 Agent 合作，循环或推导式均可；
+不按源码关键词评分。以本规格、教师测试和本人实际运行的结果判断。
+
+只要求这里约定的合法输入，不增加非法输入、异常处理、浮点数、
+多维数组或通用深复制功能。不会写函数时，让 Agent 使用给定函数壳实现，
+本人负责读懂一次调用中原对象的变化和返回内容。
+
+任务一：pop_last(items)
+
+- 输入：普通 Python 整数列表，可以为空。
+- 操作：在原列表中删除最后一项。
+- 返回：被删除的整数；空列表则返回 None。
+- 原输入：非空时少最后一项；其他项和顺序保持。空输入保持空列表。
+
+示例：
+  items = [1, 2, 2, -1]
+  result = pop_last(items)
+  result 应为 -1，items 应为 [1, 2, 2]。
+
+只返回 items[-1] 而不删除，不满足要求。
+
+任务二：positive_squares(values)
+
+- 输入：普通 Python 整数列表，或一维整数 NumPy 数组，可以为空。
+- 操作：按原顺序逐项处理，只保留大于 0 的项，再计算平方。
+- 返回：新 Python 列表，保留重复项；没有正数时返回 []。
+- 原输入：内容、顺序和形状保持不变。
+- 不同调用返回各自的新列表，之后可分别修改。
+
+示例：
+  values = [1, 2, 2, -1]
+  result = positive_squares(values)
+  result 应为 [1, 4, 4]，values 保持 [1, 2, 2, -1]。
+
+  values = np.array([0, -2, 3, 0, 1])
+  result 应为 [9, 1]，values 保持原数组。
+
+0 不是正数；不为了去重而把列表转成 set。
+
+任务三：positive_square_map(record)
+
+- 输入：普通 Python 字典，键是字符串，值是整数，可以为空。
+- 操作：逐项读取键值对，只保留值大于 0 的键，并将其值替换为平方。
+- 返回：新 Python 字典；保留键的原相对顺序，没有正数值时返回 {}。
+- 原输入：所有键、值与插入顺序保持不变。
+- 不同调用返回各自的新字典，之后可分别修改。
+
+示例：
+  record = {"a": 1, "b": 2, "c": 2, "d": -1}
+  result = positive_square_map(record)
+  result 应为 {"a": 1, "b": 4, "c": 4}，record 保持原样。
+
+这次要修改的是新结果，不是在原字典上删改后返回它。
+
+材料与命令
+
+- operations.py：学生实现，初始函数壳会抛出 NotImplementedError。
+- examples.py：公开参考与故障对照，不修改。
+- tests/test_acceptance.py：教师公开验收，不修改。
+- tests/test_student.py：一条可修改的学生小测试；可以继续增加测试。
+- tests/conftest.py：教师的候选切换工具，不修改。
+
+在 week-05/ 中恢复环境：
+  uv sync --locked
+
+默认检查学生实现（本地与学生仓库 CI 使用同一入口）：
+  uv run --locked pytest -q
+
+只运行教师验收：
+  uv run --locked pytest -q tests/test_acceptance.py --impl=student
+
+只运行自己的测试：
+  uv run --locked pytest -q tests/test_student.py --impl=student
+
+课堂先看完整的正确结果：
+  uv run --locked pytest -q --impl=reference
+
+再看已经写好的故障怎样被拒绝：
+  uv run --locked pytest -q --impl=broken
+
+--impl 是本周课程工具提供的参数，不是 pytest 的原生参数。
+student（默认）检查 operations.py；reference 和 broken 检查 examples.py。
+每个测试用同名函数参数接收 fixture，例如：
+
+  def test_my_case(positive_squares):
+      assert positive_squares([0, 3, 3, -1]) == [9, 9]
+
+不要直接 import 某个实现，否则 --impl 无法切换该次调用。
+
+reference 应通过；broken 应出现能解释的断言失败。
+初始 student 尚未实现时失败是正常起点，不要改教师测试消除失败。
+语法错误、导入错误、环境启动失败，不等于测试发现了数据处理错误。
+
+完成后，本人重新运行默认测试，选一条断言说明：
+它比较了什么、预期从哪里来、原对象是否改变、返回了什么。
+CI 通过表示这次提交通过给定检查，不表示没有任何其他错误。
