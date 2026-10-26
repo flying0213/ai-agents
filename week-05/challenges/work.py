@@ -23,7 +23,22 @@ def apply_changes(original, updates, removals):
     改回原值、新增后又删除都不算最终变化；字典键顺序不作要求。
     每次调用产生独立结果。
     """
-    raise NotImplementedError("请实现 apply_changes")
+    #raise NotImplementedError("请实现 apply_changes")
+    record = original.copy() #字典key的对仗只有1、2、3，所以只要浅复制
+    changed = set() #创建一个空的集合
+
+    for key, value in updates: 
+        record[key] = value  #先根据undate 修改值
+    for key in removals:
+        if key in record:
+            del record[key] #再根据removel 删除值
+    for key in original:
+        if key not in record or original[key] != record[key]:
+            changed.add(key) #找出被修改和被删除的
+    for key in record:
+        if key not in original:
+            changed.add(key) #找出被增加的
+    return {"record": record, "changed": changed}
 
 
 def compare_measurements(ids, baseline, current, threshold):
