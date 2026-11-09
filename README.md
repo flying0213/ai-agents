@@ -8,6 +8,7 @@
 - W4 的配置隔离练习在 [`week-04/`](week-04/)，含函数壳、故障对照、公开验收与 Notebook，使用说明见 [`README-materials.md`](week-04/README-materials.md)。
 - W5 的数据操作与遍历材料在 [`week-05/`](week-05/)，含完整 Notebook、分段练习、三道函数任务、公开测试与 CI；使用说明见 [`README-materials.md`](week-05/README-materials.md)。
 - W6 的函数与可见性纠错练习在 [`week-06/`](week-06/)，六个场景均含错误 Playground、函数壳、单元检查与折叠参考；使用说明见 [`README.md`](week-06/README.md)。
+- W7 的 NumPy 数值计算调试材料在 [`week-07/`](week-07/)，含教师演示和六道数组练习；使用说明见 [`README.md`](week-07/README.md)。
 
 W3 沿用 W2 已经 clone 的仓库和已有 Git 历史，但在 `week-03/` 建立独立的 uv 项目。W2 根目录的代码、依赖与环境不构成 W3 的代码基线；W3 的实现、锁文件与 `.venv/` 都属于 `week-03/`。
 
